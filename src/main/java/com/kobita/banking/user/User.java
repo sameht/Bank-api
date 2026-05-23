@@ -9,6 +9,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 
@@ -33,7 +35,27 @@ public class User {
     @Length(min=6)
     private String password;
     private String role;
+
     private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    @PrePersist
+    public void PrePersist(){
+        createdAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    public void PreUpdate(){
+        updatedAt = LocalDateTime.now();
+    }
 
     public User() {
     }

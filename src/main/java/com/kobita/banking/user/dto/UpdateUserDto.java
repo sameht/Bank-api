@@ -2,21 +2,15 @@ package com.kobita.banking.user.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 
-public record UserDto(
-
-    @NotNull(message= "Id is required")
-    Integer id,
-
-    @NotBlank(message= "Username is required")
+public record UpdateUserDto(
+    @NotBlank(message= "user is required")
     String username,
-    
+
     @NotBlank(message = "Email is required")
     @Email(message= "Invalid Email format")
     String email,
-    
+
     String role
 ) {
 

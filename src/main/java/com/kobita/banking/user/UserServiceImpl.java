@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.kobita.banking.exception.ApiException;
 import com.kobita.banking.user.dto.AddUserDto;
-import com.kobita.banking.user.dto.UserDto;
+import com.kobita.banking.user.dto.UpdateUserDto;
 import com.kobita.banking.user.dto.UserResponseDto;
 
 @Service
@@ -49,12 +49,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserResponseDto updateUser(UserDto dto) {
-        User user = userRepository.findById(dto.id())
+    public UserResponseDto updateUser(UpdateUserDto dto, Integer id) {
+        User user = userRepository.findById(id)
             .orElseThrow(() -> new ApiException("User not found", HttpStatus.NOT_FOUND));
 
-        if(userRepository.existsByEmail(dto.email()) != null){
-            new ApiException("Email already exists", HttpStatus.CONFLICT);
+        if(userRepository.existsByEmail(dto.email()) & !dto.email().equals(user.getEmail())){
+            throw new ApiException("Email already exists", HttpStatus.CONFLICT);
         }
         user.setUsername(dto.username());
         user.setEmail(dto.email());

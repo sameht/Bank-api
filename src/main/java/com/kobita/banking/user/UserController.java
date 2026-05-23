@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.kobita.banking.user.dto.AddUserDto;
+import com.kobita.banking.user.dto.UpdateUserDto;
 import com.kobita.banking.user.dto.UserDto;
 import com.kobita.banking.user.dto.UserResponseDto;
 
@@ -43,9 +44,9 @@ public class UserController {
         return userService.createUser(dto);
     }
 
-    @PutMapping
-    public UserResponseDto updateUser(@Valid @RequestBody UserDto dto){
-        return userService.updateUser(dto);
+    @PutMapping("/{id}")
+    public UserResponseDto updateUser(@Valid @RequestBody UpdateUserDto dto, @PathVariable Integer id){
+        return userService.updateUser(dto, id);
     }
 
     @DeleteMapping("/{id}")
