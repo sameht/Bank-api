@@ -11,7 +11,7 @@ public record UpdateUserDto(
     @Email(message= "Invalid Email format")
     String email,
 
-    String role
+    Integer roleId
 ) {
 
 }

@@ -17,7 +17,7 @@ public record AddUserDto(
     @Size(min= 6, message = "Password must be at least 6 characters")
     String password,
 
-    String role
+    Integer roleId
 ) {
 
 }

@@ -4,11 +4,15 @@ import java.time.LocalDateTime;
 
 import org.hibernate.validator.constraints.Length;
 
+import com.kobita.banking.role.Role;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
@@ -34,7 +38,10 @@ public class User {
 
     @Length(min=6)
     private String password;
-    private String role;
+
+    @ManyToOne
+    @JoinColumn(name= "role_id", nullable = false)
+    private Role role;
 
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
@@ -84,10 +91,10 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
-    public String getRole() {
+    public Role getRole() {
         return role;
     }
-    public void setRole(String role) {
+    public void setRole(Role role) {
         this.role = role;
     }
     public LocalDateTime getCreated_at() {

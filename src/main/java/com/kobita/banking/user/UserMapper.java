@@ -1,6 +1,7 @@
 package com.kobita.banking.user;
 import org.springframework.stereotype.Service;
 
+import com.kobita.banking.role.Role;
 import com.kobita.banking.user.dto.AddUserDto;
 import com.kobita.banking.user.dto.UserDto;
 import com.kobita.banking.user.dto.UserResponseDto;
@@ -22,7 +23,7 @@ public class UserMapper {
         user.setUsername(dto.username());
         user.setPassword(dto.password());
         user.setEmail(dto.email());
-        user.setRole(dto.role());
+        user.setRole(new Role(dto.roleId()));
         return user;
     }
 }
