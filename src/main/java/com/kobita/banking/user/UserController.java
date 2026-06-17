@@ -2,7 +2,6 @@ package com.kobita.banking.user;
 
 import java.util.List;
 
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.kobita.banking.user.dto.AddUserDto;
 import com.kobita.banking.user.dto.UpdateUserDto;
-import com.kobita.banking.user.dto.UserDto;
 import com.kobita.banking.user.dto.UserResponseDto;
 
 import jakarta.validation.Valid;

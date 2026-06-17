@@ -1,8 +1,13 @@
 package com.kobita.banking.user;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.List;
 
 import org.hibernate.validator.constraints.Length;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import com.kobita.banking.role.Role;
 
@@ -25,7 +30,7 @@ import jakarta.persistence.UniqueConstraint;
         @UniqueConstraint(columnNames = "email")
     }
 )
-public class User {
+public class User implements UserDetails{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -102,5 +107,10 @@ public class User {
     }
     public void setCreated_at(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority(role.getName()));
     }
 }
