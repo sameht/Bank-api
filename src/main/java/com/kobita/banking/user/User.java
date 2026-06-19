@@ -36,6 +36,7 @@ public class User implements UserDetails{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @Column(unique = true)
     private String username;
     
     @Column(unique = true)
@@ -81,6 +82,7 @@ public class User implements UserDetails{
     public String getUsername() {
         return username;
     }
+    
     public void setUsername(String username) {
         this.username = username;
     }
@@ -113,4 +115,5 @@ public class User implements UserDetails{
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role.getName()));
     }
+    
 }

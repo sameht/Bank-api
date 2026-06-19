@@ -3,7 +3,6 @@ import org.springframework.stereotype.Service;
 
 import com.kobita.banking.role.Role;
 import com.kobita.banking.user.dto.AddUserDto;
-import com.kobita.banking.user.dto.UserDto;
 import com.kobita.banking.user.dto.UserResponseDto;
 
 @Service

@@ -18,7 +18,7 @@ import com.kobita.banking.user.dto.UserResponseDto;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("api/v1/users")
+@RequestMapping("/api/v1/users")
 public class UserController {
 
     private final UserService userService;
