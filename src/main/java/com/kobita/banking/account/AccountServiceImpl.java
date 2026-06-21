@@ -79,4 +79,16 @@ public class AccountServiceImpl implements AccountService{
         return accountMapper.toAccountDto(account);
     }
 
+    @Override
+    public void updateAccountStatus(Integer accountId, AccountStatus status) {
+        Account account = accountRepository.findById(accountId).orElseThrow(()-> new ApiException("Account not found", HttpStatus.NOT_FOUND));
+        if(account.getStatus() == status){
+            throw new ApiException("Account already in this status", HttpStatus.CONFLICT);
+        }
+        account.setStatus(status);
+
+        accountRepository.save(account);
+    }
+
+
 }

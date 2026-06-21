@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.kobita.banking.account.dto.AccountDto;
 import com.kobita.banking.account.dto.AddAccountDto;
 import com.kobita.banking.account.dto.UpdateAccountDto;
+import com.kobita.banking.common.AccountStatus;
 
 import jakarta.validation.Valid;
 
@@ -22,4 +23,6 @@ public interface AccountService {
     public AccountDto deleteAccount(Integer id);
 
     public AccountDto updateAccount(Integer accountId, UpdateAccountDto dto);
+
+    public void updateAccountStatus(Integer accountId, AccountStatus status);
 }

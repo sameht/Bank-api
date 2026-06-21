@@ -10,11 +10,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.kobita.banking.account.dto.AccountDto;
 import com.kobita.banking.account.dto.AddAccountDto;
 import com.kobita.banking.account.dto.UpdateAccountDto;
+import com.kobita.banking.common.AccountStatus;
 
 import jakarta.validation.Valid;
 
@@ -50,6 +52,12 @@ public class AccountController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteAccount(@PathVariable Integer id){
         accountService.deleteAccount(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/{accountId}/status")
+    public ResponseEntity<Void> updateAccountStatus(@PathVariable Integer accountId, @RequestParam AccountStatus status){
+        accountService.updateAccountStatus(accountId, status);
         return ResponseEntity.noContent().build();
     }
 }
