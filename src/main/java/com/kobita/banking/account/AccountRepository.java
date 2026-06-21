@@ -1,0 +1,11 @@
+package com.kobita.banking.account;
+
+import java.util.List;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface AccountRepository extends JpaRepository<Account, Integer> {
+    public List<Account> findByUserId(Integer userId);
+
+    public Boolean existsByAccountNumber(String accountNumber);
+}

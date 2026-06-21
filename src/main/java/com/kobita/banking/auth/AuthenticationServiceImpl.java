@@ -38,8 +38,8 @@ public class AuthenticationServiceImpl implements AuthenticationService{
 
     @Override
     public AuthenticationResponse register(RegisterRequest dto) {
-        if(userRepository.findByEmail(dto.email()).isPresent()){
-            throw new ApiException("Email already exists", HttpStatus.CONFLICT);
+        if(userRepository.findByUsername(dto.username()).isPresent()){
+            throw new ApiException("Username already exists", HttpStatus.CONFLICT);
         }
         var user = new User();
         user.setUsername(dto.username());
@@ -60,14 +60,14 @@ public class AuthenticationServiceImpl implements AuthenticationService{
     public AuthenticationResponse authenticate(AuthenticationRequest dto) {
         try {
         authenticationManager.authenticate(
-            new UsernamePasswordAuthenticationToken(dto.email(), dto.password())
+            new UsernamePasswordAuthenticationToken(dto.username(), dto.password())
         );
         } catch (Exception e) {
             e.printStackTrace(); 
             throw e;
         }
 
-        User user = userRepository.findByEmail(dto.email()).orElseThrow(() -> new ApiException("Email not registred", HttpStatus.NOT_FOUND));
+        User user = userRepository.findByUsername(dto.username()).orElseThrow(() -> new ApiException("Username not registred", HttpStatus.NOT_FOUND));
         String token = jwtService.generateToken(user);
         return new AuthenticationResponse(token);
     }

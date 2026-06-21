@@ -24,7 +24,7 @@ public class ApplicationConfig {
     //lambda expression that implements the UserDetailsService interface (functional interface) without creating a separate class.
     @Bean
     public UserDetailsService userDetailsService(){
-        return email -> repository.findByEmail(email)
+        return username -> repository.findByUsername(username)
             .orElseThrow(() -> 
                 new UsernameNotFoundException("User not found"));
     }
@@ -46,7 +46,7 @@ public class ApplicationConfig {
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration config){
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception{
         return config.getAuthenticationManager();
     }
 

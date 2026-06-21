@@ -19,7 +19,7 @@ import io.jsonwebtoken.security.Keys;
 public class JwtService {
     
     private static final String SECRET_KEY = "bXlzZWNyZXRrZXlteXNlY3JldGtleW15c2VjcmV0a2V5";
-    private static final Integer EXPIRATION = 1000 * 60 * 24;
+    private static final Integer EXPIRATION = 10000 * 60 * 24;
 
     public String extractUsername(String jwtToken){
         return extractClaim(jwtToken, claims -> claims.getSubject());

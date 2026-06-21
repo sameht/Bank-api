@@ -7,6 +7,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -16,7 +17,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 
-@Service
+@Component
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
@@ -38,8 +39,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         final String jwtToken;
         jwtToken = authHeader.substring(7);
 
-        final String username = jwtService.extractUsername(jwtToken);
+        final String username;
 
+        try {
+            username = jwtService.extractUsername(jwtToken);
+            //System.out.print(username);
+        } catch (Exception e) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+        
         if(username != null && SecurityContextHolder.getContext().getAuthentication() == null){
             UserDetails userdetails = this.userDetailsService.loadUserByUsername(username);
             if(jwtService.isTokenValid(jwtToken, userdetails)){
