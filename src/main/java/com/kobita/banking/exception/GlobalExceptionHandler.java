@@ -3,9 +3,9 @@ package com.kobita.banking.exception;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -16,6 +16,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, Object>> handleValidationErrors(MethodArgumentNotValidException ex){
         Map<String, String> errors = new HashMap<>();
+
         ex.getBindingResult().getFieldErrors().forEach(error ->
             errors.put(error.getField(), error.getDefaultMessage())
         );
@@ -34,5 +35,20 @@ public class GlobalExceptionHandler {
 
         error.put("message", ex.getMessage());
         return ResponseEntity.status(ex.getStatus()).body(error);
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<Map<String, String>> handleHttpMessageNotReadableException(HttpMessageNotReadableException ex){
+        Map<String, String> errors = new HashMap<>();
+        Throwable cause = ex.getMostSpecificCause();
+
+        if (cause.getMessage().contains("TransactionType")) {
+            errors.put("type", "Type is required or invalid");
+        } else {
+            errors.put("message", "Invalid request body");
+        }
+
+        return ResponseEntity.badRequest().body(errors);
+
     }
 }
