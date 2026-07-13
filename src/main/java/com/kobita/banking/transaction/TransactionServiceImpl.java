@@ -3,6 +3,9 @@ package com.kobita.banking.transaction;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +14,7 @@ import com.kobita.banking.account.AccountRepository;
 import com.kobita.banking.exception.ApiException;
 import com.kobita.banking.transaction.dto.AddTransactionDto;
 import com.kobita.banking.transaction.dto.TransactionDto;
+import com.kobita.banking.transaction.dto.TransactionFilterCriteria;
 
 import jakarta.transaction.Transactional;
 
@@ -30,11 +34,16 @@ public class TransactionServiceImpl implements TransactionService {
     }
     
     @Override
-    public List<TransactionDto> findAll() {
-        return transactionRepository.findAll()
-                .stream()
-                .map((transaction)-> transactionMapper.toTransactionDto(transaction))
-                .toList();
+    public Page<TransactionDto> findAll(TransactionFilterCriteria criteria, Pageable pageable) {
+        Specification<Transaction> spec = Specification
+            .where(TransactionSpecifications.hasFromAccountNumber(criteria.fromAccountNumber()))
+            .and(TransactionSpecifications.hasToAccountNumber(criteria.toAccountNumber()))
+            .and(TransactionSpecifications.hasType(criteria.type()))
+            .and(TransactionSpecifications.maxAmount(criteria.maxAmount()))
+            .and(TransactionSpecifications.minAmount(criteria.minAmount()));
+            
+        return transactionRepository.findAll(spec, pageable)
+                .map((transaction)-> transactionMapper.toTransactionDto(transaction));
     }
 
     @Transactional
@@ -58,11 +67,12 @@ public class TransactionServiceImpl implements TransactionService {
             toAccount.getBalance().add(dto.amount())
         );
 
-        var account = transactionMapper.toTransaction(dto);
-        account.setFromAccount(fromAccount);
-        account.setToAccount(toAccount);
+        var transaction = transactionMapper.toTransaction(dto);
+        transaction.setFromAccount(fromAccount);
+        transaction.setToAccount(toAccount);
+        transactionRepository.save(transaction);
 
-        return transactionMapper.toTransactionDto(account);
+        return transactionMapper.toTransactionDto(transaction);
     }
 
 }

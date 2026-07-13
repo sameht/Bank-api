@@ -2,6 +2,9 @@ package com.kobita.banking.transaction;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -11,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.kobita.banking.transaction.dto.AddTransactionDto;
 import com.kobita.banking.transaction.dto.TransactionDto;
+import com.kobita.banking.transaction.dto.TransactionFilterCriteria;
 
 import jakarta.validation.Valid;
 
@@ -25,8 +29,10 @@ public class TransactionController {
     }
     
     @GetMapping()
-    public ResponseEntity<List<TransactionDto>> findAll(){
-        return ResponseEntity.ok(transactionService.findAll());
+    public ResponseEntity<Page<TransactionDto>> findAll(
+        TransactionFilterCriteria criteria,
+        @PageableDefault(page = 0, size = 5, sort = "id") Pageable pageable){
+        return ResponseEntity.ok(transactionService.findAll(criteria, pageable));
     }
 
     @PostMapping()

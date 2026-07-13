@@ -8,8 +8,8 @@ import com.kobita.banking.common.TransactionType;
 public record TransactionDto(
     Integer id,
     BigDecimal amount,
-    Account fromAccount,
-    Account toAccount,
+    String fromAccountNumber,
+    String toAccountNumber,
     TransactionType type
 ) {
 
